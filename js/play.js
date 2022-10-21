@@ -77,13 +77,6 @@ startGame = async () => {
 	getNewQuestion();
 }
 
-printQuestions = () => {
-	cheated = true;
-	const answer = prompt("Password: ");
-	if (!answer === "Souvlaki123") return;
-	console.log(questions);
-}
-
 getNewQuestion = () => {
 	if (availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
 		localStorage.setItem("mostRecentScore", score);
