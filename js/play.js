@@ -87,7 +87,7 @@ printQuestions = () => {
 getNewQuestion = () => {
 	if (availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
 		localStorage.setItem("mostRecentScore", score);
-		return window.location.assign("/quiz/end");
+		return window.location.assign("/end");
 	}
 	
 	questionCounter++;
