@@ -52,6 +52,10 @@ body {
 	text-align: center;
 }
 
+#question {
+	user-select: none;
+}
+
 #progressBar {
 	width: 20rem;
 	height: 3rem;
