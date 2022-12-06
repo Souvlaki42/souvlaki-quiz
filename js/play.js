@@ -13,26 +13,29 @@ let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 let questions = [];
-let questionsUrl = `https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&type=multiple`;
 
-getRandomUniqueArrayItem = (array) => {
-	let options = Math.floor(Math.random() * array.length);
-	let removed = array.splice(options, 1);
+const getRandomUniqueArrayItem = (array) => {
+	const options = Math.floor(Math.random() * array.length);
+	const removed = array.splice(options, 1);
 	return removed[0];
 }
 
-decodeHTMLEntities = (rawText) => {
-	let textArea = document.createElement("textarea");
+const decodeHTMLEntities = (rawText) => {
+	const textArea = document.createElement("textarea");
 	textArea.innerHTML = rawText;
 	return textArea.value;
 }
 
-getQuestions = () => {
-	const data = fetch(questionsUrl).then((res) => {return res.json();}).then((data) => {return data}).catch((err) => console.error(err));
-	return data;
+const getQuestions = async () => {
+	const api_url = `https://proxy.cors.sh/https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&type=multiple`;
+	return await fetch(api_url).then((res) => {
+		return res.json();
+	}).then((data) => {
+		return data;
+	}).catch((err) => console.error(err));
 };
 
-formatQuestions = async () => {
+const formatQuestions = async () => {
 	const questions = await getQuestions();
 	const results = questions.results;
 	let newQuestions = [];
@@ -69,7 +72,7 @@ formatQuestions = async () => {
 	return newQuestions;
 };
 
-startGame = async () => {
+const startGame = async () => {
 	questions = await formatQuestions();
 	questionCounter = 0;
 	score = 0;
@@ -77,10 +80,11 @@ startGame = async () => {
 	getNewQuestion();
 }
 
-getNewQuestion = () => {
+const getNewQuestion = () => {
+
 	if (availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
 		localStorage.setItem("mostRecentScore", score);
-		return window.location.assign("/end");
+		return window.location.assign(`/end${ext}`);
 	}
 	
 	questionCounter++;
@@ -99,9 +103,8 @@ getNewQuestion = () => {
 
 	availableQuestions.splice(questionIndex, 1);
 	acceptingAnswers = true;
-}
 
-choices.forEach((choice) => {
+	choices.forEach((choice) => {
 	choice.addEventListener("click", (event) => {
 		if (!acceptingAnswers) return;
 		
@@ -127,13 +130,11 @@ choices.forEach((choice) => {
 			getNewQuestion();
 		}, 1000);
 	});
-});
+})};
 
-incrementScore = num => {
+const incrementScore = (num) => {
 	score += num;
 	scoreText.innerText = score;
 }
 
 startGame();
-
-console.log("%c Don't cheat!! I can see you...", "font-weight: bold; font-size: 50px;color: red;");
