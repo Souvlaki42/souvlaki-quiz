@@ -1,2 +1,2 @@
 # souvlaki-quiz
-my new quiz game
+my new quiz game in the same repo
